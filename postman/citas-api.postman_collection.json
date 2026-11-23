@@ -11,6 +11,10 @@
     {
       "key": "servicioId",
       "value": ""
+    },
+    {
+      "key": "terapistaId",
+      "value": ""
     }
   ],
   "item": [
@@ -608,6 +612,396 @@
               "raw": "{{baseUrl}}/api/servicios/{{servicioId}}",
               "host": ["{{baseUrl}}"],
               "path": ["api", "servicios", "{{servicioId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "rama 2 terapistas",
+      "item": [
+        {
+          "name": "1. Terapistas: listar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "2. Terapistas: activas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/activos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "activos"]
+            }
+          }
+        },
+        {
+          "name": "3. Terapistas: buscar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/buscar?texto=gut",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "buscar"],
+              "query": [
+                {
+                  "key": "texto",
+                  "value": "gut"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Terapistas: obtener 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "1"]
+            }
+          }
+        },
+        {
+          "name": "5. Terapistas: obtener 999",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "999"]
+            }
+          }
+        },
+        {
+          "name": "6. Terapistas: crear con DNI repetido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 23,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"41257893\",\n  \"telefono\": \"987100207\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "7. Terapistas: crear (usuario 23)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('terapistaId', pm.response.json().id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 23,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"49012345\",\n  \"telefono\": \"987100207\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "8. Terapistas: crear con el mismo usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 23,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"49012346\",\n  \"telefono\": \"987100207\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "9. Terapistas: usuario sin rol TERAPISTA",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 13,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"49012347\",\n  \"telefono\": \"987100207\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "10. Terapistas: usuario que no existe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 999,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"49012348\",\n  \"telefono\": \"987100207\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "11. Terapistas: DNI y celular inválidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 23,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"123\",\n  \"telefono\": \"12345\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas"]
+            }
+          }
+        },
+        {
+          "name": "12. Terapistas: actualizar la creada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": 23,\n  \"nombres\": \"Valeria\",\n  \"apellidos\": \"Torres Rojas\",\n  \"dni\": \"49012345\",\n  \"telefono\": \"987100299\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/{{terapistaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "{{terapistaId}}"]
+            }
+          }
+        },
+        {
+          "name": "13. Terapistas: eliminar 1 (tiene citas)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "1"]
+            }
+          }
+        },
+        {
+          "name": "14. Terapistas: eliminar la creada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapistas/{{terapistaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapistas", "{{terapistaId}}"]
             }
           }
         }
