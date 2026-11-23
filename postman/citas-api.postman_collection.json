@@ -19,6 +19,10 @@
     {
       "key": "horarioId",
       "value": ""
+    },
+    {
+      "key": "asignacionId",
+      "value": ""
     }
   ],
   "item": [
@@ -1358,6 +1362,272 @@
               "raw": "{{baseUrl}}/api/horarios/{{horarioId}}",
               "host": ["{{baseUrl}}"],
               "path": ["api", "horarios", "{{horarioId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "rama 4 servicios de cada terapista",
+      "item": [
+        {
+          "name": "1. Asignaciones: listar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios"]
+            }
+          }
+        },
+        {
+          "name": "2. Asignaciones: de la terapista 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios/terapista/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios", "terapista", "1"]
+            }
+          }
+        },
+        {
+          "name": "3. Asignaciones: del servicio 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios/servicio/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios", "servicio", "1"]
+            }
+          }
+        },
+        {
+          "name": "4. Asignaciones: obtener 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios", "1"]
+            }
+          }
+        },
+        {
+          "name": "5. Asignaciones: obtener 999",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios", "999"]
+            }
+          }
+        },
+        {
+          "name": "6. Asignaciones: crear (terapista 2 + servicio 1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('asignacionId', pm.response.json().id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"terapistaId\": 2,\n  \"servicioId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios"]
+            }
+          }
+        },
+        {
+          "name": "7. Asignaciones: repetida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409', () => pm.response.to.have.status(409));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"terapistaId\": 2,\n  \"servicioId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios"]
+            }
+          }
+        },
+        {
+          "name": "8. Asignaciones: servicio que no existe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"terapistaId\": 2,\n  \"servicioId\": 999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios"]
+            }
+          }
+        },
+        {
+          "name": "9. Asignaciones: sin terapista",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"servicioId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios"]
+            }
+          }
+        },
+        {
+          "name": "10. Asignaciones: eliminar la creada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/terapista-servicios/{{asignacionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "terapista-servicios", "{{asignacionId}}"]
             }
           }
         }
